@@ -1,0 +1,258 @@
+<html>
+
+<head>
+    <title>KYC</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    <script src="./buffer.js"></script>
+    <script src="./ipfs.js"></script>
+    <script src="./app.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-primary bg-primary">
+        <h1 class="navbar-brand ">
+            <h1>KYC
+                <span style="color:black">Customer Plateform</span>
+            </h1>
+        </h1>
+    </nav>
+    <div id="loading" hidden>
+        <img src="app/images/Spinner.gif" alt="Loading....." class="rounded" width="50px" height="50px">
+    </div>
+    <div class="alert alert-success container" id="success_add" role="alert" hidden>
+        Data Added Successfully ....
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="alert alert-success container" id="success_update" role="alert" hidden>
+        Data Updated Successfully ....
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="container">
+
+        <div class="col col-lg-6">
+            <h3 style="color: rgb(22, 106, 136)">Add Personal Details</h3>
+        </div>
+
+        <div class="col col-lg-6">
+            <div class="pull-right">
+                <h3>Customer ID :
+                    <span id="customer_id" style="color: red"></span>
+                </h3>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class="container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Fields</th>
+                    <th>Values</th>
+                    <th></th>
+                    <th>Bank A Status</th>
+                    <th>Bank B Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Name</th>
+                    <td>
+                        <input type="text" id="name" maxlength="32" class="form-control" name="name" placeholder="Name"></input>
+                    </td>
+                    <td>
+                        &nbsp;&nbsp;
+                    </td>
+                    <td>
+                        <span id="name_bankA"> </span>
+                    </td>
+                    <td>
+                        <span id="name_bankB"> </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Email</th>
+                    <td>
+                        <input type="email" id="email" maxlength="32" class="form-control" name="email" placeholder="Email"></input>
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <span id="email_bankA"> </span>
+                    </td>
+                    <td>
+                        <span id="email_bankB"> </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Phone Number</th>
+                    <td>
+                        <input type="text" maxlength="32" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="phone_no" class="form-control" name="phone_no"
+                            placeholder="Phone Number"></input>
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <span id="phone_bankA"> </span>
+                    </td>
+                    <td>
+                        <span id="phone_bankB"> </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Address</th>
+                    <td>
+                        <input type="text" maxlength="32" id="address" class="form-control" name="address" placeholder="Address"></input>
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <span id="address_bankA"> </span>
+                    </td>
+                    <td>
+                        <span id="address_bankB"> </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Blood Group</th>
+                    <td>
+                        <input type="text" id="blood_group" maxlength="32" class="form-control" name="blood_group" placeholder="Blood group"></input>
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <span id="blood_group_bankA"> </span>
+                    </td>
+                    <td>
+                        <span id="blood_group_bankB"> </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <h3 style="color: rgb(22, 106, 136)">Upload Documents</h3>
+                    </th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row">Customer Photo</th>
+                    <td>
+
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="photo" name="photo"  aria-describedby="basic-addon2">
+                            <a class="input-group-addon btn btn-primary" onclick="App.upload()" id="basic-addon2">Upload</a>
+
+                        </div>
+                        <br>
+
+                        <a id="url" target="_blank">
+                            <img id="output" height="50px" onerror="this.src='http://www.nosun.co.za/wp-content/themes/sistina2/core/assets/images/no-featured-175.jpg';" width="50px" alt="User Image...">
+                        </a>
+
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <span id="image_bankA"> </span>
+                    </td>
+                    <td>
+                        <span id="image_bankB"> </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">Document 1</th>
+                    <td>
+
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="document1" name="document1" aria-describedby="basic-addon2">
+                            <a class="input-group-addon btn btn-primary" onclick="App.uploadDocument1()" id="basic-addon2">Upload</a>
+
+                        </div>
+                        <br>
+
+                        <a id="url_document1" target="_blank">
+                            <img id="output_document1" height="50px" onerror="this.src='http://www.nosun.co.za/wp-content/themes/sistina2/core/assets/images/no-featured-175.jpg';" width="50px" alt="User Document1...">
+                        </a>
+
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <span id="document1_bankA"> </span>
+                    </td>
+                    <td>
+                        <span id="document1_bankB"> </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Document 2</th>
+                    <td>
+
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="document2" name="document2" aria-describedby="basic-addon2">
+                            <a class="input-group-addon btn btn-primary" onclick="App.uploadDocument2()" id="basic-addon2">Upload</a>
+
+                        </div>
+                        <br>
+
+                        <a id="url_document2" target="_blank">
+                            <img id="output_document2" height="50px" onerror="this.src='http://www.nosun.co.za/wp-content/themes/sistina2/core/assets/images/no-featured-175.jpg';" width="50px" alt="User Document2...">
+                        </a>
+
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <span id="document2_bankA"> </span>
+                    </td>
+                    <td>
+                        <span id="document2_bankB"> </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Document 3</th>
+                    <td>
+
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="document3" name="document3" aria-describedby="basic-addon2">
+                            <a class="input-group-addon btn btn-primary" onclick="App.uploadDocument3()" id="basic-addon2">Upload</a>
+
+                        </div>
+                        <br>
+
+                        <a id="url_document3" target="_blank">
+                            <img id="output_document3" height="50px" onerror="this.src='http://www.nosun.co.za/wp-content/themes/sistina2/core/assets/images/no-featured-175.jpg';" width="50px" alt="User Document1...">
+                        </a>
+
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <span id="document3_bankA"> </span>
+                    </td>
+                    <td>
+                        <span id="document3_bankB"> </span>
+                    </td>
+                </tr>
+
+
+            </tbody>
+        </table>
+
+
+    </div>
+    <div class="container">
+
+        <button class="btn btn-primary " id="add_details_button" onclick="App.addDetails()">Submit</button>
+        <button class="btn btn-danger " id="update_details_button" onclick="App.updateDetails()">Update details</button>
+        <button class="btn btn-info" onclick="App.customer_details()">Refresh</button>
+
+    </div>
+</body>
+
+</html>
